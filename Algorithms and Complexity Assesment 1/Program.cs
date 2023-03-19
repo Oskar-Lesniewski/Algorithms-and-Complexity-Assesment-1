@@ -13,15 +13,15 @@ namespace Assesment1
             int RoadNr = Convert.ToInt32(Console.ReadLine());
             if (RoadNr == 1)
             {
-                Reading.Read(1);
+                Reading.Functionality(1);
             }
             else if (RoadNr == 2)
             {
-                Reading.Read(2);
+                Reading.Functionality(2);
             }
             else if (RoadNr == 3)
             {
-                Reading.Read(3);
+                Reading.Functionality(3);
             }
             else
             {
