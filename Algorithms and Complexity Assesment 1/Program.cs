@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-namespace Assesment1
+﻿namespace Assesment1
 {
     class Program
     {
@@ -23,27 +18,27 @@ namespace Assesment1
                     {
                         if (RoadNr == 1)
                         {
-                            Reading.Read(1);
+                            Functions.Read(1);
                         }
                         else if (RoadNr == 2)
                         {
-                            Reading.Read(2);
+                            Functions.Read(2);
                         }
                         else if (RoadNr == 3)
                         {
-                            Reading.Read(3);
+                            Functions.Read(3);
                         }
                         else if (RoadNr == 4)
                         {
-                            Reading.Read(4);
+                            Functions.Read(4);
                         }
                         else if (RoadNr == 5)
                         {
-                            Reading.Read(5);
+                            Functions.Read(5);
                         }
                         else if (RoadNr == 6)
                         {
-                            Reading.Read(6);
+                            Functions.Read(6);
                         }
                     }
                 }
