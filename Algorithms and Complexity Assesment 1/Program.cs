@@ -4,18 +4,23 @@
     {
         static void Main(string[] args)
         {
+            // Main Loop to load get into selecting a road to read in.
             while (true)
             {
-                try
+                // Beginning of error handling.
+                try 
                 {
-                    Console.WriteLine("What Road Do You Want To Choose? (256 Values Enter 1,2,3 for each respective road.) (2048 Values Enter 4,5,6 for each respective road.)");
+                    //User chooses desired road to read into the program.
+                    Console.WriteLine("What Road Do You Want To Choose? (1,2,3) or (4,5,6 which are Roads 1-3 with 2048 values.)");
                     int RoadNr = Convert.ToInt32(Console.ReadLine());
                     if (RoadNr < 0 || RoadNr > 6)
                     {
+                        // If there is an invalid input, throw an exception. 
                         throw new Exception();
                     }
                     else
                     {
+                        // If there is no error, continue and call the class Functions, and method Read of the respective value enetered by the user.
                         if (RoadNr == 1)
                         {
                             Functions.Read(1);
@@ -44,11 +49,14 @@
                 }
                 catch
                 {
+                    // Catches the error and loops back to the start.
                     Console.WriteLine("Invalid input try again.");
                     continue;
                 }
+                // Breaks the loop if no errors present.
                 break;
             }
+            // So that the program doesnt close unexpectedly and right after finishing.
             Console.WriteLine("Please press ENTER to exit.");
             Console.ReadLine();
         }

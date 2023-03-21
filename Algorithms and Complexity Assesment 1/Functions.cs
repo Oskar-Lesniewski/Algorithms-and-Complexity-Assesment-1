@@ -1,19 +1,25 @@
 ﻿namespace Assesment1
 {
+    // Class containing all the codes functionality.
     public class Functions
     {
+        // Method that takes the user input from the main program to read in correct files.
         public static bool Read(int RoadNr)
         {
             if (RoadNr == 1)
             {
+                // Reads in respective file into the program into an array.
                 string[] lines = File.ReadAllLines("Road_1_256.txt");
                 int[] Road = Array.ConvertAll(lines, int.Parse);
+                // Unsorted array which is a copy, for use later on if needed.
                 int[] RoadUS = Array.ConvertAll(lines, int.Parse);
+                // Sets an increment which will be needed later on.
                 int Increment = 10;
                 while (true)
                 {
                     try
                     {
+                        // User has option to merge Roads 1 and 3.
                         Console.WriteLine("To Merge Roads 1 and 3 type (1), To continue with just this Road type (0). ");
                         int Merged = Convert.ToInt32(Console.ReadLine());
                         if (Merged < 0 || Merged > 1)
@@ -24,12 +30,15 @@
                         {
                             if (Merged == 1)
                             {
+                                // Reads in Road 3.
                                 string[] linesToMerge = File.ReadAllLines("Road_3_256.txt");
                                 int[] RoadToMerge = Array.ConvertAll(linesToMerge, int.Parse);
+                                // Calls merge method to merge Roads 1 and 3 into one array.
                                 Merge(Road, RoadToMerge, Increment);
                             }
                             else if (Merged == 0)
                             {
+                                // Continues without merging, calls the SortSearch method.
                                 SortSearch(Road, RoadUS, Increment);
                             }
                         }
@@ -181,24 +190,30 @@
             
             return false;
         }
+        // Method used for merging Roads 1 and 3.
         public static bool Merge(int[] Road1, int[] Road2, int Increment)
         {
+            // Creates a TempList, which gets all the values from both arrays added.
             var TempList = new List<int>();
             TempList.AddRange(Road1);
             TempList.AddRange(Road2);
+            // The list gets put into an array.
             int[] RoadMerged = TempList.ToArray();
+            // Also generates an unsorted version, for use later on if needed.
             int[] RoadUSMerged = TempList.ToArray(); 
+            // Calls SortSearch with new values.
             SortSearch(RoadMerged, RoadUSMerged, Increment);
             return false;
         }
+        // Method that will sort and search through the array in various ways. 
         public static bool SortSearch(int[] Road, int[] RoadUS, int Increment)
         {
-            int i = 0;
             int length = Road.Length;
             while (true)
             {
                 try
                 {
+                    // User can decide to have an Ascending or Descending sort.
                     Console.WriteLine("Ascending (1) or Descending (2) sort?");
                     int ArrDir = Convert.ToInt32(Console.ReadLine());
                     if (ArrDir < 1 || ArrDir > 2)
@@ -210,6 +225,7 @@
                         string Dir = "Unsorted";
                         if (ArrDir == 1)
                         {
+                            // Ascending Bubble Sort.
                             Dir = "Ascending";
                             for (int x = 0; x < length - 1; x++)
                             {
@@ -218,7 +234,7 @@
                                     if (Road[y] > Road[y + 1])
                                     {
                                         int Temp = Road[y];
-                                        Road[y] = Road[y + 1]; // reference lecture code, bubble sort, or https://code-maze.com/csharp-bubble-sort/
+                                        Road[y] = Road[y + 1];
                                         Road[y + 1] = Temp;
                                     }
                                 }
@@ -226,6 +242,7 @@
                         }
                         else if (ArrDir == 2)
                         {
+                            // Descending Bubble Sort.
                             Dir = "Descending";
                             for (int x = 0; x < length - 1; x++)
                             {
@@ -240,6 +257,7 @@
                                 }
                             }
                         }
+                        // Tells the user the direction the array has been sorted in.
                         Console.WriteLine("The data has been sorted in " + Dir + " order.");
                         break;
                     }
@@ -249,8 +267,9 @@
                     Console.WriteLine("Invalid input try again.");
                     continue;
                 }
-            }        
-            for (i = 0; i < Road.Length; i += Increment)
+            } 
+            // Loop to display every 10 or 50 values depending on the amount of road values.
+            for (int i = 0; i < Road.Length; i += Increment)
             {
                 if (i == 0)
                 {
@@ -261,11 +280,12 @@
                     Console.WriteLine(Road[i - 1] + " This is " + i + "th value");
                 }
             }
-            // Searching
+            // Searching section of code.
             while (true)
             {
                 try
                 {
+                    // Asks user if they want to find values in the Sorted or Unsorted arrays.
                     Console.WriteLine("Do you want to find a value in the Sorted (1) or Unsorted (2) array?");
                     int SearchType = Convert.ToInt32(Console.ReadLine());
                     if (SearchType < 1 || SearchType > 2)
@@ -274,7 +294,7 @@
                     }
                     else
                     {
-                        int[] ArrType = { };
+                        int[] ArrType = Array.Empty<int>();
                         if (SearchType == 1)
                         {
                             ArrType = Road;
