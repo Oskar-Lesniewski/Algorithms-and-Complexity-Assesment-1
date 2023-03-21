@@ -301,12 +301,14 @@
                         }
                         else if (SearchType == 2)
                         {
+                            // Replaces sorted Road with unsorted.
                             ArrType = RoadUS;
                         }
                         int Max = ArrType.Max();
                         int Min = ArrType.Min();
                         try
                         {
+                            // User enters value they wish to find in the array.
                             Console.WriteLine("Enter a number you want to find in the data between " + Min + " - " + Max);
                             int Selected = Convert.ToInt32(Console.ReadLine());
                             if (Selected < Min || Selected > Max)
@@ -318,12 +320,14 @@
                                 int FoundValue = -1;
                                 int FoundValueIndex = -1;
                                 bool WasFound = false;
+                                // Sequential search to find the users value.
                                 for (int z = 0; z < ArrType.Length; z++)
                                 {
                                     if (Selected == ArrType[z])
                                     {
-                                        FoundValue = ArrType[z]; // Reference lecture code, sequential search
+                                        FoundValue = ArrType[z];
                                         FoundValueIndex = z + 1;
+                                        // Tells user position of desired value.
                                         Console.WriteLine("The value was found at position " + FoundValueIndex + " and the value found was " + FoundValue);
                                         WasFound = true;
                                         continue;
@@ -335,9 +339,10 @@
                                 }
                                 int ClosestValue = -1;
                                 int ClosestIndex = -1;
+                                // Displays closest value to the desired value if desired value not found.
                                 if (FoundValue == -1 && WasFound == false)
                                 {
-                                    ClosestValue = ArrType.OrderBy(v => Math.Abs(v - Selected)).First(); // Used code here, https://stackoverflow.com/questions/41277957/get-closest-value-in-an-array
+                                    ClosestValue = ArrType.OrderBy(v => Math.Abs(v - Selected)).First();
                                     ClosestIndex = Array.IndexOf(ArrType, ClosestValue);
                                     Console.WriteLine("The value was not found, but the closest one is " + ClosestValue + " in the position " + (ClosestIndex + 1));
                                 }
