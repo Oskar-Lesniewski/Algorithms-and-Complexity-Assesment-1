@@ -208,7 +208,7 @@
         // Method that will sort and search through the array in various ways. 
         public static bool SortSearch(int[] Road, int[] RoadUS, int Increment)
         {
-            int length = Road.Length;
+            int Length = Road.Length;
             while (true)
             {
                 try
@@ -227,9 +227,9 @@
                         {
                             // Ascending Bubble Sort.
                             Dir = "Ascending";
-                            for (int x = 0; x < length - 1; x++)
+                            for (int x = 0; x < Length - 1; x++)
                             {
-                                for (int y = 0; y < length - x - 1; y++)
+                                for (int y = 0; y < Length - x - 1; y++)
                                 {
                                     if (Road[y] > Road[y + 1])
                                     {
@@ -244,9 +244,9 @@
                         {
                             // Descending Bubble Sort.
                             Dir = "Descending";
-                            for (int x = 0; x < length - 1; x++)
+                            for (int x = 0; x < Length - 1; x++)
                             {
-                                for (int y = 0; y < length - x - 1; y++)
+                                for (int y = 0; y < Length - x - 1; y++)
                                 {
                                     if (Road[y] < Road[y + 1])
                                     {
@@ -320,13 +320,15 @@
                                 int FoundValue = -1;
                                 int FoundValueIndex = -1;
                                 bool WasFound = false;
+                                int Amount = 0;
                                 // Sequential search to find the users value.
-                                for (int z = 0; z < ArrType.Length; z++)
+                                for (int Checked = 0; Checked < ArrType.Length; Checked++)
                                 {
-                                    if (Selected == ArrType[z])
+                                    if (Selected == ArrType[Checked])
                                     {
-                                        FoundValue = ArrType[z];
-                                        FoundValueIndex = z + 1;
+                                        Amount++;
+                                        FoundValue = ArrType[Checked];
+                                        FoundValueIndex = Checked + 1;
                                         // Tells user position of desired value.
                                         Console.WriteLine("The value was found at position " + FoundValueIndex + " and the value found was " + FoundValue);
                                         WasFound = true;
@@ -337,12 +339,22 @@
                                         FoundValue = -1;
                                     }
                                 }
+                                Console.WriteLine("The desired value was found " + Amount + " times.");
                                 int ClosestValue = -1;
                                 int ClosestIndex = -1;
                                 // Displays closest value to the desired value if desired value not found.
                                 if (FoundValue == -1 && WasFound == false)
                                 {
-                                    ClosestValue = ArrType.OrderBy(v => Math.Abs(v - Selected)).First();
+                                    ClosestValue = ArrType[0];
+                                    int difference = Math.Abs(Selected - ClosestValue);
+                                    for (int i = 1; i < ArrType.Length; i++)
+                                    {
+                                        int currentDifference = Math.Abs(Selected - ArrType[i]);
+                                        if (currentDifference < difference)
+                                        {
+                                            ClosestValue = ArrType[i];
+                                        }
+                                    }
                                     ClosestIndex = Array.IndexOf(ArrType, ClosestValue);
                                     Console.WriteLine("The value was not found, but the closest one is " + ClosestValue + " in the position " + (ClosestIndex + 1));
                                 }
