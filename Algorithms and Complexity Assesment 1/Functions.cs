@@ -1,4 +1,6 @@
-﻿namespace Assesment1
+﻿using System.Collections.Generic;
+
+namespace Assesment1
 {
     // Class containing all the codes functionality.
     public class Functions
@@ -187,7 +189,7 @@
             {
                 return false;
             }
-            
+
             return false;
         }
         // Method used for merging Roads 1 and 3.
@@ -200,11 +202,12 @@
             // The list gets put into an array.
             int[] RoadMerged = TempList.ToArray();
             // Also generates an unsorted version, for use later on if needed.
-            int[] RoadUSMerged = TempList.ToArray(); 
+            int[] RoadUSMerged = TempList.ToArray();
             // Calls SortSearch with new values.
             SortSearch(RoadMerged, RoadUSMerged, Increment);
             return false;
         }
+
         // Method that will sort and search through the array in various ways. 
         public static bool SortSearch(int[] Road, int[] RoadUS, int Increment)
         {
@@ -216,49 +219,83 @@
                     // User can decide to have an Ascending or Descending sort.
                     Console.WriteLine("Ascending (1) or Descending (2) sort?");
                     int ArrDir = Convert.ToInt32(Console.ReadLine());
+                    Console.WriteLine("Bubble Sort (1) or Insertion Sort (2) or Merge Sort (3) or Quick Sort (4)?");
+                    int SortType = Convert.ToInt32(Console.ReadLine());
                     if (ArrDir < 1 || ArrDir > 2)
+                    {
+                        throw new Exception();
+                    }
+                    else if (SortType < 1 || SortType > 4)
                     {
                         throw new Exception();
                     }
                     else
                     {
                         string Dir = "Unsorted";
-                        if (ArrDir == 1)
+                        string SortedIn = "None";
+                        if (ArrDir == 1 && SortType == 1)
                         {
                             // Ascending Bubble Sort.
                             Dir = "Ascending";
-                            for (int x = 0; x < Length - 1; x++)
-                            {
-                                for (int y = 0; y < Length - x - 1; y++)
-                                {
-                                    if (Road[y] > Road[y + 1])
-                                    {
-                                        int Temp = Road[y];
-                                        Road[y] = Road[y + 1];
-                                        Road[y + 1] = Temp;
-                                    }
-                                }
-                            }
+                            SortedIn = "Bubble Sort";
+                            BubbleSort(Road, Length, ArrDir);
                         }
-                        else if (ArrDir == 2)
+                        else if (ArrDir == 2 && SortType == 1)
                         {
                             // Descending Bubble Sort.
                             Dir = "Descending";
-                            for (int x = 0; x < Length - 1; x++)
-                            {
-                                for (int y = 0; y < Length - x - 1; y++)
-                                {
-                                    if (Road[y] < Road[y + 1])
-                                    {
-                                        int Temp = Road[y];
-                                        Road[y] = Road[y + 1];
-                                        Road[y + 1] = Temp;
-                                    }
-                                }
-                            }
+                            SortedIn = "Bubble Sort";
+                            BubbleSort(Road, Length, ArrDir);
+                        }
+                        else if (ArrDir == 1 && SortType == 2)
+                        {
+                            // Ascending Insertion Sort
+                            Dir = "Ascending";
+                            SortedIn = "Insertion Sort";
+                            InsertionSort(Road, Length, ArrDir);
+                        }
+                        else if (ArrDir == 2 && SortType == 2)
+                        {
+                            // Descending Insertion Sort
+                            Dir = "Descending";
+                            SortedIn = "Insertion Sort";
+                            InsertionSort(Road, Length, ArrDir);
+                        }
+                        else if (ArrDir == 1 && SortType == 3)
+                        {
+                            // Ascending Merge Sort
+                            Dir = "Ascending";
+                            SortedIn = "Merge Sort";
+                            MergeSort(Road, 0, Road.Length - 1, ArrDir);
+                        }
+                        else if (ArrDir == 2 && SortType == 3)
+                        {
+                            // Descending Merge Sort
+                            Dir = "Descending";
+                            SortedIn = "Merge Sort";
+                            MergeSort(Road, 0, Road.Length - 1, ArrDir);
+                        }
+                        else if (ArrDir == 1 && SortType == 4)
+                        {
+                            // Ascending Quick Sort
+                            Dir = "Ascending";
+                            SortedIn = "Quick Sort";
+                            QuickSort(Road, 0, Road.Length - 1, ArrDir);
+                        }
+                        else if (ArrDir == 2 && SortType == 4)
+                        {
+                            // Descending Quick Sort
+                            Dir = "Descending";
+                            SortedIn = "Quick Sort";
+                            QuickSort(Road, 0, Road.Length - 1, ArrDir);
+                        }
+                        else
+                        {
+                            Console.WriteLine("You entered an incorrect combination, try again.");
+                            throw new Exception();
                         }
                         // Tells the user the direction the array has been sorted in.
-                        Console.WriteLine("The data has been sorted in " + Dir + " order.");
+                        Console.WriteLine("The data has been sorted in " + Dir + " order using the Sort " + SortedIn);
                         break;
                     }
                 }
@@ -267,7 +304,7 @@
                     Console.WriteLine("Invalid input try again.");
                     continue;
                 }
-            } 
+            }
             // Loop to display every 10 or 50 values depending on the amount of road values.
             for (int i = 0; i < Road.Length; i += Increment)
             {
@@ -311,7 +348,13 @@
                             // User enters value they wish to find in the array.
                             Console.WriteLine("Enter a number you want to find in the data between " + Min + " - " + Max);
                             int Selected = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("Sequential (1) or Binary (2) Search (Can only use binary on sorted data, and will only find first value, no duplicates.) ");
+                            int SortWanted = Convert.ToInt32(Console.ReadLine());
                             if (Selected < Min || Selected > Max)
+                            {
+                                throw new Exception();
+                            }
+                            if (SortWanted < 1 || SortWanted > 2)
                             {
                                 throw new Exception();
                             }
@@ -320,39 +363,80 @@
                                 int FoundValue = -1;
                                 int FoundValueIndex = -1;
                                 bool WasFound = false;
-                                int Amount = 0;
-                                // Sequential search to find the users value.
-                                for (int Checked = 0; Checked < ArrType.Length; Checked++)
+                                if (SortWanted == 1)
                                 {
-                                    if (Selected == ArrType[Checked])
+                                    // Sequential Search taken from https://learn-eu-central-1-prod-fleet01-xythos.content.blackboardcdn.com/5eec76bac93d5/10243307?X-Blackboard-S3-Bucket=learn-eu-central-1-prod-fleet01-xythos&X-Blackboard-Expiration=1679529600000&X-Blackboard-Signature=3rW7l8gOCUrHv7XvxCGT0THwRNy9AoLl306heDSdfLk%3D&X-Blackboard-Client-Id=307403&X-Blackboard-S3-Region=eu-central-1&response-cache-control=private%2C%20max-age%3D21600&response-content-disposition=inline%3B%20filename%2A%3DUTF-8%27%27CMP1124M_Lecture_5_Searching%2526Sorting1.pdf
+                                    // Sequential search to find the users value.
+                                    for (int Checked = 0; Checked < ArrType.Length; Checked++)
                                     {
-                                        Amount++;
-                                        FoundValue = ArrType[Checked];
-                                        FoundValueIndex = Checked + 1;
-                                        // Tells user position of desired value.
-                                        Console.WriteLine("The value was found at position " + FoundValueIndex + " and the value found was " + FoundValue);
-                                        WasFound = true;
-                                        continue;
-                                    }
-                                    else
-                                    {
-                                        FoundValue = -1;
+                                        if (Selected == ArrType[Checked])
+                                        {
+                                            // Checks Each Value
+                                            FoundValue = ArrType[Checked];
+                                            FoundValueIndex = Checked + 1;
+                                            // Tells user position of desired value.
+                                            Console.WriteLine("The value was found at position " + FoundValueIndex + " and the value found was " + FoundValue);
+                                            WasFound = true;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            FoundValue = -1;
+                                        }
                                     }
                                 }
-                                Console.WriteLine("The desired value was found " + Amount + " times.");
+                                else if (SortWanted == 2 && SearchType == 1)
+                                {
+                                    // Binary Search inspired from https://csharpexamples.com/c-binary-search-example/ 
+                                    // Binary Search
+                                    int left = 0;
+                                    int right = ArrType.Length - 1;
+                                    while (left <= right)
+                                    {
+                                        int mid = left + (right - left) / 2;
+
+                                        if (ArrType[mid] == Selected)
+                                        {
+                                            FoundValue = ArrType[mid];
+                                            FoundValueIndex = mid + 1;
+                                            Console.WriteLine("The value was found at position " + FoundValueIndex + " and the value found was " + FoundValue);
+                                            break;
+                                        }
+
+                                        if (ArrType[mid] < Selected)
+                                        {
+                                            left = mid + 1;
+                                        }
+                                        else
+                                        {
+                                            right = mid - 1;
+                                        }
+                                    }
+
+                                    if (FoundValue == -1)
+                                    {
+                                        Console.WriteLine("The desired value was not found.");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Something went wrong, try again.");
+                                    throw new Exception();
+                                }
                                 int ClosestValue = -1;
                                 int ClosestIndex = -1;
                                 // Displays closest value to the desired value if desired value not found.
                                 if (FoundValue == -1 && WasFound == false)
                                 {
                                     ClosestValue = ArrType[0];
-                                    int difference = Math.Abs(Selected - ClosestValue);
+                                    int Difference = Math.Abs(Selected - ClosestValue);
                                     for (int i = 1; i < ArrType.Length; i++)
                                     {
-                                        int currentDifference = Math.Abs(Selected - ArrType[i]);
-                                        if (currentDifference < difference)
+                                        int DifferenceNow = Math.Abs(Selected - ArrType[i]);
+                                        if (DifferenceNow < Difference)
                                         {
                                             ClosestValue = ArrType[i];
+                                            Difference = DifferenceNow;
                                         }
                                     }
                                     ClosestIndex = Array.IndexOf(ArrType, ClosestValue);
@@ -366,17 +450,215 @@
                             Console.WriteLine("Inalid input try again.");
                             continue;
                         }
-                    }                       
+                    }
                 }
                 catch
                 {
                     Console.WriteLine("Inalid input try again.");
                     continue;
                 }
-            }            
+            }
             return false;
         }
-        
+        // Bubble sort method taken from https://learn-eu-central-1-prod-fleet01-xythos.content.blackboardcdn.com/5eec76bac93d5/10243307?X-Blackboard-S3-Bucket=learn-eu-central-1-prod-fleet01-xythos&X-Blackboard-Expiration=1679529600000&X-Blackboard-Signature=3rW7l8gOCUrHv7XvxCGT0THwRNy9AoLl306heDSdfLk%3D&X-Blackboard-Client-Id=307403&X-Blackboard-S3-Region=eu-central-1&response-cache-control=private%2C%20max-age%3D21600&response-content-disposition=inline%3B%20filename%2A%3DUTF-8%27%27CMP1124M_Lecture_5_Searching%2526Sorting1.pdf
+        public static void BubbleSort(int[] Road, int Length, int ArrDir)
+        {
+            if (ArrDir == 1)
+            {
+                for (int x = 0; x < Length - 1; x++)
+                {
+                    for (int y = 0; y < Length - x - 1; y++)
+                    {
+                        if (Road[y] > Road[y + 1])
+                        {
+                            int Temp = Road[y];
+                            Road[y] = Road[y + 1];
+                            Road[y + 1] = Temp;
+                        }
+                    }
+                }
+            }
+            else if (ArrDir == 2)
+            {
+                for (int x = 0; x < Length - 1; x++)
+                {
+                    for (int y = 0; y < Length - x - 1; y++)
+                    {
+                        if (Road[y] < Road[y + 1])
+                        {
+                            int Temp = Road[y];
+                            Road[y] = Road[y + 1];
+                            Road[y + 1] = Temp;
+                        }
+                    }
+                }
+            }
+        }
+        // Insertion Sort taken from https://learn-eu-central-1-prod-fleet01-xythos.content.blackboardcdn.com/5eec76bac93d5/10243307?X-Blackboard-S3-Bucket=learn-eu-central-1-prod-fleet01-xythos&X-Blackboard-Expiration=1679529600000&X-Blackboard-Signature=3rW7l8gOCUrHv7XvxCGT0THwRNy9AoLl306heDSdfLk%3D&X-Blackboard-Client-Id=307403&X-Blackboard-S3-Region=eu-central-1&response-cache-control=private%2C%20max-age%3D21600&response-content-disposition=inline%3B%20filename%2A%3DUTF-8%27%27CMP1124M_Lecture_5_Searching%2526Sorting1.pdf
+        public static void InsertionSort(int[] Road, int Length, int ArrDir)
+        {
+            int SortedNum = 1;
+            int Index;
+            while (SortedNum < Length)
+            {
+                int temp = Road[SortedNum];
+                if (ArrDir == 1)
+                {
+                    for (Index = SortedNum; Index > 0; Index--)
+                    {
+                        if (temp < Road[Index - 1])
+                        {
+                            Road[Index] = Road[Index - 1];
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    Road[Index] = temp;
+                    SortedNum++;
+                }
+                else if (ArrDir == 2)
+                {
+                    for (Index = SortedNum; Index > 0; Index--)
+                    {
+                        if (temp > Road[Index - 1])
+                        {
+                            Road[Index] = Road[Index - 1];
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    Road[Index] = temp;
+                    SortedNum++;
+                }
+            }
+        }
+        // Merge Sort taken from https://csharpexamples.com/c-merge-sort-algorithm-implementation/
+        public static void MergeSort(int[] Input, int Left, int Right, int ArrDir)
+        {
+            if (Left < Right)
+            {
+                int Middle = (Left + Right) / 2;
 
+                MergeSort(Input, Left, Middle, ArrDir);
+                MergeSort(Input, Middle + 1, Right, ArrDir);
+
+                Merging(Input, Left, Middle, Right, ArrDir);
+            }
+        }
+        public static void Merging(int[] Input, int Left, int Middle, int Right, int ArrDir)
+        {
+            int[] leftArray = new int[Middle - Left + 1];
+            int[] rightArray = new int[Right - Middle];
+
+            Array.Copy(Input, Left, leftArray, 0, Middle - Left + 1);
+            Array.Copy(Input, Middle + 1, rightArray, 0, Right - Middle);
+
+            int i = 0;
+            int j = 0;
+            if (ArrDir == 1)
+            {
+                for (int k = Left; k < Right + 1; k++)
+                {
+                    if (i == leftArray.Length)
+                    {
+                        Input[k] = rightArray[j];
+                        j++;
+                    }
+                    else if (j == rightArray.Length)
+                    {
+                        Input[k] = leftArray[i];
+                        i++;
+                    }
+                    else if (leftArray[i] <= rightArray[j])
+                    {
+                        Input[k] = leftArray[i];
+                        i++;
+                    }
+                    else
+                    {
+                        Input[k] = rightArray[j];
+                        j++;
+                    }
+                }
+            }
+            else if (ArrDir == 2)
+            {
+                for (int k = Left; k < Right + 1; k++)
+                {
+                    if (i == leftArray.Length)
+                    {
+                        Input[k] = rightArray[j];
+                        j++;
+                    }
+                    else if (j == rightArray.Length)
+                    {
+                        Input[k] = leftArray[i];
+                        i++;
+                    }
+                    else if (leftArray[i] >= rightArray[j])
+                    {
+                        Input[k] = leftArray[i];
+                        i++;
+                    }
+                    else
+                    {
+                        Input[k] = rightArray[j];
+                        j++;
+                    }
+                }
+            }
+        }
+        // Quick Sort taken from https://csharpexamples.com/c-quick-sort-algorithm-implementation/
+        public static void QuickSort(int[] Road, int Start, int End, int ArrDir)
+        {
+            int i;
+            if (Start < End)
+            {
+                i = Partition(Road, Start, End, ArrDir);
+
+                QuickSort(Road, Start, i - 1, ArrDir);
+                QuickSort(Road, i + 1, End, ArrDir);
+            }
+        }
+        public static int Partition(int[] Road, int Start, int End, int ArrDir)
+        {
+            int temp;
+            int p = Road[End];
+            int i = Start - 1;
+            if (ArrDir == 1)
+            {
+                for (int j = Start; j <= End - 1; j++)
+                {
+                    if (Road[j] <= p)
+                    {
+                        i++;
+                        temp = Road[i];
+                        Road[i] = Road[j];
+                        Road[j] = temp;
+                    }
+                }
+            }
+            else if (ArrDir == 2)
+            {
+                for (int j = Start; j <= End - 1; j++)
+                {
+                    if (Road[j] >= p)
+                    {
+                        i++;
+                        temp = Road[i];
+                        Road[i] = Road[j];
+                        Road[j] = temp;
+                    }
+                }
+            }
+            temp = Road[i + 1];
+            Road[i + 1] = Road[End];
+            Road[End] = temp;
+            return i + 1;
+        }
     }
 }
